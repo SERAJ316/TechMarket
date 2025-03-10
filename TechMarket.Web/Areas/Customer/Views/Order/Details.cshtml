@@ -1,0 +1,81 @@
+﻿@model TechMarket.Entities.ViewModels.OrderVM
+
+<div class="container-fluid">
+
+    <div class="container">
+        <!-- Title -->
+        <div class="d-flex justify-content-between align-items-center py-3">
+            <h2 class="h5 mb-0"><a href="#" class="text-muted"></a> Order #@Model.OrderHeader.Id</h2>
+        </div>
+
+        <!-- Main content -->
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Details -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="mb-3 d-flex justify-content-between">
+                            <div>
+                                <span class="me-3">@Model.OrderHeader.OrderDate.ToShortDateString()</span>
+                                <span class="me-3">#@Model.OrderHeader.Id</span>
+                                <span class="badge rounded-pill bg-info">@Model.OrderHeader.OrderStatus</span>
+                            </div>
+                        </div>
+                        <table class="table table-borderless">
+                            <tbody>
+                                
+                                @foreach(var item in Model.OrderDetails){
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex mb-2">
+                                                <div class="flex-shrink-0">
+                                                    <img src="/@item.Product.Image" alt="" width="35" class="img-fluid">
+                                                </div>
+                                                <div class="flex-lg-grow-1 ms-3">
+                                                    <h6 class="small mb-0"><a href="#" class="text-reset">@item.Product.Name</a></h6>
+                                                    
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>1</td>
+                                        <td class="text-end">$@item.Product.Price</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>     
+                                <tr class="fw-bold">
+                                    <td colspan="2">TOTAL</td>
+                                    <td class="text-end">@Model.OrderHeader.TotalPrice.ToString("c")</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-4">
+                <!-- Customer Notes -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h3 class="h6">Customer Notes</h3>
+                        <p>Sed enim, faucibus litora velit vestibulum habitasse. Cras lobortis cum sem aliquet mauris rutrum. Sollicitudin. Morbi, sem tellus vestibulum porttitor.</p>
+                    </div>
+                </div>
+                
+                    <div class="modal-footer">
+
+                        <a asp-action="Index" class="btn btn-secondary">Back to Orders</a>
+                        @if (Model.OrderHeader.PaymentStatus == "Pending")
+                        {
+                            <a href="@Url.Action("StripePayment", "Order", new { orderId = Model.OrderHeader.Id })" class="btn btn-primary btn-sm">Continue Payment</a>
+                            
+                        }
+                    </div>
+               
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

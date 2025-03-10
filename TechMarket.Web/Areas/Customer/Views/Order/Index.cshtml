@@ -1,0 +1,62 @@
+﻿@model IEnumerable<TechMarket.Entities.Models.OrderHeader>
+
+<h2>Your Orders</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Order Date</th>
+            <th>Total Price</th>
+            <th>Order Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.OrderDate.ToShortDateString()</td>
+                <td>@order.TotalPrice.ToString("C")</td>
+                <td>
+                    @if (order.OrderStatus == "Approved")
+                    {
+                        <span class="badge badge-success">Approved</span>
+                    }
+                    @if (order.OrderStatus == "Pending")
+                    {
+                        <span class="badge badge-warning">Pending</span>
+                    }
+                    @if (order.OrderStatus == "Cancelled")
+                    {
+                        <span class="badge badge-danger">Cancelled</span>
+                    }
+                    @if (order.OrderStatus == "Shipped")
+                    {
+                        <span class="badge badge-primary">Shipped</span>
+                    }
+                    @if (order.OrderStatus == "Proccessing")
+                    {
+                        <span class="badge badge-secondary">Proccessing</span>
+                    }
+                </td>
+                <td>
+                    @if (order.PaymentStatus == "Pending")
+                    {
+                        <a href="@Url.Action("StripePayment", "Order", new { orderId = order.Id })" class="btn btn-primary btn-sm">Continue Payment</a>
+
+                        <button type="button" class="btn btn-danger btn-sm" onclick="DeleteItem('@Url.Action("Delete", "Order", new { id = order.Id })')">
+                            Delete
+                        </button>
+                    }
+                    <a asp-action="Details" asp-route-id="@order.Id" class="btn btn-info btn-sm">View Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="~/js/delorder.js"></script>
+}

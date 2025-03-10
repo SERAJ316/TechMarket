@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Product>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+
+<main>
+<div class="album py-5 bg-light">
+    <div class="container mt-4">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-3">
+                    <div class="card mb-4 box-shadow">
+                        <a asp-action="Details" asp-route-ProductId="@item.Id">
+                            <img class="card-img-top" src="~/@item.Image" alt="@item.Name" data-holder-rendered="true" style="height: 350px; width:100%; display: block;" />
+                        </a>
+                        <div class="card-body">
+                            <h5 class="fw-bolder">@item.Name</h5>
+                            <p class="card-text">@Html.Raw(item.Description)</p>
+                            <p class="card-text">Price: <strong>$@item.Price.ToString("F2")</strong></p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a asp-action="Details" asp-route-ProductId="@item.Id" class="btn btn-sm btn-outline-secondary">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col-auto">
+            @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page }),
+                     new PagedListRenderOptions
+            {
+                UlElementClasses = new[] { "pagination justify-content-center" },
+                LiElementClasses = new[] { "page-item" },
+                PageClasses = new[] { "page-link" }
+            })
+        </div>
+    </div>
+</div>
+</main>

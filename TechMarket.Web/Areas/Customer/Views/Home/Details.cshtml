@@ -1,0 +1,46 @@
+﻿@model ShoppingCart
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            <input hidden asp-for="ProductId" />
+            <div class="col-md-6">
+                <img class="card-img-top mb-5 mb-md-0" src="~/@Model.Product.Image" alt="..." width="600" height="700" />
+            </div>
+            <div class="col-md-6">
+                <div class="small mb-1">@Model.Product.Category.Name</div>
+                <h1 class="display-5 fw-bolder">@Model.Product.Name</h1>
+                <div class="fs-5 mb-5">
+                    <span class="text-decoration-line-through">$45.00</span>
+                    <span>$@Model.Product.Price</span>
+                </div>
+                <p class="lead">@Html.Raw(Model.Product.Description)</p>
+
+                <!-- Container for buttons (Add to Cart and Buy Now) -->
+                <div class="d-flex">
+                    <!-- Add to Cart form -->
+                    <form method="post" asp-action="Details">
+                        <div class="d-flex">
+                            <input hidden asp-for="ProductId" />
+                            <input class="form-control text-center me-3" id="inputQuantity" asp-for="Count" style="max-width: 4rem" />
+                            <button class="btn btn-outline-dark flex-shrink-0 me-3" type="submit">
+                                <i class="bi-cart-fill me-2"></i>
+                                Add to cart
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Buy Now form -->
+                    <form method="post" asp-action="BuyNow">
+                        <input type="hidden" name="productId" value="@Model.Product.Id" />
+                        <input type="hidden" name="returnUrl" value="@Url.Action("Details", "Home", new { productId = Model.Product.Id })" />
+                        <button type="submit" class="btn btn-primary flex-shrink-0">
+                            <i class="bi bi-credit-card me-1"></i>
+                            Buy Now
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
